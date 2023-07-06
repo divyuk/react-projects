@@ -1,8 +1,9 @@
 import { useState } from "react";
 
-export default function Form() {
+export default function Form({ onAddItems }) {
   const [description, setDesciption] = useState("");
   const [quantity, setQuantity] = useState(1);
+
   function handleSubmit(event) {
     event.preventDefault();
     // If there is no description dont go down
@@ -11,6 +12,7 @@ export default function Form() {
     const newItem = { description, quantity, packed: false, id: Date.now() };
     console.log(newItem);
     // Get the Form back to its original form.
+    onAddItems(newItem);
     setDesciption("");
     setQuantity(1);
   }
