@@ -1,5 +1,5 @@
 import "./styles.css";
-
+import { useState } from "react";
 const faqs = [
   {
     title: "Where are these chairs assembled?",
@@ -24,5 +24,24 @@ export default function App() {
 }
 
 function Accordion() {
-  return <div>TODO</div>;
+  const renderedItem = faqs.map((item, index) => (
+    <Item item={item} index={index} />
+  ));
+
+  return <div className="accordion">{renderedItem}</div>;
+}
+
+function Item({ item, index }) {
+  const { title, text } = item;
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={open ? "item open" : "item"}>
+      <p className="number"> {"0" + (index + 1)}</p>
+      <p className="title">{title}</p>
+      <p onClick={() => setOpen(!open)} className="icon">
+        {open ? "-" : "+"}
+      </p>
+      {open ? <p className="content-box"> {text}</p> : ""}
+    </div>
+  );
 }
