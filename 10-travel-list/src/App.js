@@ -19,6 +19,9 @@ export default function App() {
       )
     );
   }
+  function handleClearAll() {
+    setItems([]);
+  }
 
   return (
     <div className="app">
@@ -28,6 +31,7 @@ export default function App() {
         items={items}
         onDeleteItem={handleDeleteItem}
         onToggleItem={togglePackedItem}
+        onClearAll={handleClearAll}
       />
       <Stats items={items} />
     </div>
