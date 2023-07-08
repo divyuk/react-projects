@@ -13,6 +13,10 @@ const faqs = [
     title: "Do you ship to countries outside the EU?",
     text: "Excepturi velit laborum, perspiciatis nemo perferendis reiciendis aliquam possimus dolor sed! Dolore laborum ducimus veritatis facere molestias!",
   },
+  {
+    title: "Do you give discount?",
+    text: "Excepturi velit laborum, perspiciatis nemo perferendis reiciendis aliquam possimus dolor sed! Dolore laborum ducimus veritatis facere molestias!",
+  },
 ];
 
 export default function App() {
@@ -24,24 +28,34 @@ export default function App() {
 }
 
 function Accordion() {
+  const [open, setOpen] = useState(null);
   const renderedItem = faqs.map((item, index) => (
-    <Item item={item} index={index} />
+    <Item
+      key={index}
+      title={item.title}
+      index={index}
+      handlerOpen={setOpen}
+      open={open}
+    >
+      {item.text}
+    </Item>
   ));
 
   return <div className="accordion">{renderedItem}</div>;
 }
 
-function Item({ item, index }) {
-  const { title, text } = item;
-  const [open, setOpen] = useState(false);
+function Item({ title, index, handlerOpen, open, children }) {
+  const isOpen = index === open;
+  console.log("index = ", index, " open= ", open, " isOpen= ", isOpen);
+  function handleToggle() {
+    handlerOpen(isOpen ? null : index);
+  }
   return (
-    <div className={open ? "item open" : "item"}>
+    <div onClick={handleToggle} className={isOpen ? "item open" : "item"}>
       <p className="number"> {"0" + (index + 1)}</p>
       <p className="title">{title}</p>
-      <p onClick={() => setOpen(!open)} className="icon">
-        {open ? "-" : "+"}
-      </p>
-      {open ? <p className="content-box"> {text}</p> : ""}
+      <p className="icon">{isOpen ? "-" : "+"}</p>
+      {isOpen && <p className="content-box"> {children}</p>}
     </div>
   );
 }
