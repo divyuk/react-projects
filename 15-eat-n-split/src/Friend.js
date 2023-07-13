@@ -1,16 +1,22 @@
 import { useState } from "react";
 
-export default function Friend({ friend }) {
+export default function Friend({
+  friend,
+  selected,
+  handleSelect,
+  handleSelectedFriend,
+}) {
   const [account, setAccount] = useState(0);
-  const [current, setCurrent] = useState(false);
-  let { id, name, image, balance } = friend;
-  balance = account;
-  function handleSelect() {
-    setCurrent((curr) => !curr);
+
+  const { id, name, image, balance } = friend;
+
+  function handleClick() {
+    handleSelect(!selected);
+    handleSelectedFriend(id);
   }
   return (
     <>
-      <li>
+      <li className={selected ? "selected" : ""}>
         <img src={image} alt={id} />
         <h3>{name}</h3>
         {balance < 0 ? (
@@ -20,8 +26,8 @@ export default function Friend({ friend }) {
             {name} ows you {balance}
           </p>
         )}
-        <button onClick={handleSelect} className="button">
-          {current ? "Close" : "Select"}
+        <button onClick={handleClick} className="button">
+          {selected ? "Close" : "Select"}
         </button>
       </li>
     </>

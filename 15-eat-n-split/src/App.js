@@ -25,9 +25,18 @@ const initialFriends = [
 
 export default function App() {
   const [friends, setFriends] = useState(initialFriends);
-
+  const [selected, setSelected] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState(null);
   const renderedItems = initialFriends.map((ele, index) => {
-    return <Friend friend={ele} key={index} />;
+    return (
+      <Friend
+        friend={ele}
+        key={index}
+        selected={selected}
+        handleSelect={setSelected}
+        handleSelectedFriend={setSelectedFriend}
+      />
+    );
   });
 
   return (
@@ -36,7 +45,7 @@ export default function App() {
         <ul>{renderedItems}</ul>
         <button className="button">Add Friend</button>
       </div>
-      <BillSplit />
+      {selected && <BillSplit />}
       {/* <Add /> */}
     </div>
   );

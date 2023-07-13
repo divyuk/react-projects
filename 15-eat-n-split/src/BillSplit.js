@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function BillSplit({ handleSplit, account }) {
+export default function BillSplit({ handleSplit, account, selectedFriend }) {
   const [bill, setBill] = useState(0);
   const [yourExpense, setYourExpense] = useState(0);
   const [whoPay, setWhoPay] = useState(0);
@@ -34,7 +34,7 @@ export default function BillSplit({ handleSplit, account }) {
       <label>🤑 Who is paying the bill</label>
       <select onChange={handlerSelect}>
         <option value={0}>You</option>
-        <option value={0}>X</option>
+        <option value={1}>X</option>
       </select>
       <button type="submit" className="button">
         Split Bill
