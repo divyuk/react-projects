@@ -1,3 +1,7 @@
+import { useState } from "react";
+import Friend from "./Friend";
+import BillSplit from "./BillSplit";
+import Add from "./Add";
 const initialFriends = [
   {
     id: 118836,
@@ -18,3 +22,22 @@ const initialFriends = [
     balance: 0,
   },
 ];
+
+export default function App() {
+  const [friends, setFriends] = useState(initialFriends);
+
+  const renderedItems = initialFriends.map((ele, index) => {
+    return <Friend friend={ele} key={index} />;
+  });
+
+  return (
+    <div className="app">
+      <div className="sidebar">
+        <ul>{renderedItems}</ul>
+        <button className="button">Add Friend</button>
+      </div>
+      <BillSplit />
+      {/* <Add /> */}
+    </div>
+  );
+}
