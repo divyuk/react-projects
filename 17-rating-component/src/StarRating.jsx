@@ -29,7 +29,7 @@ export default function StarRating({
 
   function handleRating(rate) {
     setRating(rate);
-    onSetRating(rate);
+    if (onSetRating) onSetRating(rate);
   }
   return (
     <div style={containerStyle}>
