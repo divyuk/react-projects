@@ -1,7 +1,8 @@
 import { useState } from "react";
-import Friend from "./Friend";
+import FriendList from "./FriendList";
+import FormAddFriend from "./FormAddFriend";
+import Button from "./Button";
 import BillSplit from "./BillSplit";
-import Add from "./Add";
 const initialFriends = [
   {
     id: 118836,
@@ -24,29 +25,54 @@ const initialFriends = [
 ];
 
 export default function App() {
-  const [friends, setFriends] = useState(initialFriends);
-  const [selected, setSelected] = useState(false);
+  const [friends, setfriends] = useState(initialFriends);
+  const [addFriend, setAddFriend] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
-  const renderedItems = initialFriends.map((ele, index) => {
-    return (
-      <Friend
-        friend={ele}
-        key={index}
-        selected={selected}
-        handleSelect={setSelected}
-        handleSelectedFriend={setSelectedFriend}
-      />
+
+  function handlerClick() {
+    setAddFriend((show) => !show);
+  }
+  function addFriendList(newfriend) {
+    setfriends((oldFriend) => [...oldFriend, newfriend]);
+    setAddFriend(!addFriend);
+  }
+  function handleSplit(value) {
+    setfriends(
+      friends.map((currFriend) =>
+        currFriend.id === selectedFriend.id
+          ? { ...currFriend, balance: currFriend.balance + value }
+          : currFriend
+      )
     );
-  });
+    setSelectedFriend(null);
+  }
+
+  function handlerSelectedFriend(pickedFriend) {
+    // setSelectedFriend(pickedFriend);
+    setSelectedFriend((curr) =>
+      curr?.id === pickedFriend.id ? null : pickedFriend
+    );
+    setAddFriend(false);
+  }
 
   return (
     <div className="app">
       <div className="sidebar">
-        <ul>{renderedItems}</ul>
-        <button className="button">Add Friend</button>
+        <FriendList
+          friends={friends}
+          onSelection={handlerSelectedFriend}
+          selectedFriend={selectedFriend}
+        />
+
+        {addFriend && <FormAddFriend onAddFriend={addFriendList} />}
+
+        <Button handleClick={handlerClick}>
+          {addFriend ? "Close" : "Add Friend"}
+        </Button>
       </div>
-      {selected && <BillSplit />}
-      {/* <Add /> */}
+      {selectedFriend && (
+        <BillSplit selectedFriend={selectedFriend} onSplit={handleSplit} />
+      )}
     </div>
   );
 }

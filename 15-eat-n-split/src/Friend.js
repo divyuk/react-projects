@@ -1,34 +1,28 @@
 import { useState } from "react";
+import Button from "./Button";
 
-export default function Friend({
-  friend,
-  selected,
-  handleSelect,
-  handleSelectedFriend,
-}) {
-  const [account, setAccount] = useState(0);
-
+export default function Friend({ friend, onSelection, selectedFriend }) {
   const { id, name, image, balance } = friend;
-
-  function handleClick() {
-    handleSelect(!selected);
-    handleSelectedFriend(id);
-  }
+  const isSelected = selectedFriend?.id === id;
   return (
     <>
-      <li className={selected ? "selected" : ""}>
+      <li className={isSelected ? "selected" : ""}>
         <img src={image} alt={id} />
         <h3>{name}</h3>
-        {balance < 0 ? (
-          <p>You owe {Math.abs(balance)} to X </p>
-        ) : (
-          <p>
-            {name} ows you {balance}
+        {balance < 0 && (
+          <p className="red">
+            You owe {name} ₹{Math.abs(balance)}
           </p>
         )}
-        <button onClick={handleClick} className="button">
-          {selected ? "Close" : "Select"}
-        </button>
+        {balance > 0 && (
+          <p className="green">
+            {name} owes you ₹{balance}
+          </p>
+        )}
+        {balance === 0 && <p>You and {name} are even</p>}
+        <Button handleClick={() => onSelection(friend)}>
+          {isSelected ? "Close" : "Select"}
+        </Button>
       </li>
     </>
   );
