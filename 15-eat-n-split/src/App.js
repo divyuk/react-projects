@@ -71,7 +71,11 @@ export default function App() {
         </Button>
       </div>
       {selectedFriend && (
-        <BillSplit selectedFriend={selectedFriend} onSplit={handleSplit} />
+        <BillSplit
+          key={selectedFriend.id}
+          selectedFriend={selectedFriend}
+          onSplit={handleSplit}
+        />
       )}
     </div>
   );
