@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const tempMovieData = [
   {
@@ -50,6 +50,9 @@ const tempWatchedData = [
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
+//! API https://www.omdbapi.com/?i=tt3896198&apikey=a611e6e3
+// key = a611e6e3
+const KEY = "a611e6e3";
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState(tempMovieData);
@@ -60,6 +63,21 @@ export default function App() {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
+
+  useEffect(
+    function () {
+      async function fetchData() {
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        );
+        const data = await res.json();
+        setMovies(data.Search);
+      }
+
+      fetchData();
+    },
+    [query]
+  );
 
   return (
     <>
@@ -76,7 +94,7 @@ export default function App() {
           onChange={(e) => setQuery(e.target.value)}
         />
         <p className="num-results">
-          Found <strong>{movies.length}</strong> results
+          Found <strong>{movies?.length}</strong> results
         </p>
       </nav>
 
