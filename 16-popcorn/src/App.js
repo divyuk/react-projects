@@ -56,33 +56,47 @@ const KEY = "a611e6e3";
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
+  const [query, setQuery] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // useEffect(
-  //   function () {
-  //     async function fetchData() {
-  //       const res = await fetch(
-  //         `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-  //       );
-  //       const data = await res.json();
-  //       setMovies(data.Search);
-  //     }
+  useEffect(
+    function () {
+      async function fetchData() {
+        try {
+          setIsLoading(true);
+          setError("");
+          const res = await fetch(
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          );
+          if (!res.ok)
+            throw new Error("Something went wrong while fetching data");
 
-  //     fetchData();
-  //   },
-  //   [query]
-  // );
+          const data = await res.json();
+          setMovies(data.Search);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+      fetchData();
+    },
+    [query]
+  );
 
   return (
     <>
       <NavBar>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <MovieSearch movies={movies} />
       </NavBar>
       <Main>
         <Box>
-          <MovieList movies={movies} />
+          {isLoading && <Loader />}
+          {!isLoading && !error && <MovieList movies={movies} />}
+          {error && <ErrorMessage message={error} />}
         </Box>
-
         <Box>
           <WatchedSummary watched={watched} />
           <WatchedList watched={watched} />
@@ -90,6 +104,10 @@ export default function App() {
       </Main>
     </>
   );
+}
+
+function Loader() {
+  return <p className="loader">Loading...</p>;
 }
 
 function NavBar({ children }) {
@@ -110,8 +128,7 @@ function Logo() {
   );
 }
 
-function Search() {
-  const [query, setQuery] = useState("");
+function Search({ query, setQuery }) {
   return (
     <input
       className="search"
@@ -220,5 +237,13 @@ function WatchedList({ watched }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <p className="error">
+      <span>⛔️</span> {message}
+    </p>
   );
 }
