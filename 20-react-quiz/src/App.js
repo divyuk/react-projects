@@ -1,8 +1,8 @@
-import DateCounter from "./DateCounter";
+import Header from "./Header";
 export default function App() {
   return (
-    <div>
-      <DateCounter />
+    <div classname="app">
+      <Header />
     </div>
   );
 }
