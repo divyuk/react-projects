@@ -7,6 +7,7 @@ function createRandomPost() {
     body: faker.hacker.phrase(),
   };
 }
+// ? use Context API
 // ! 1) Create context
 const PostContext = createContext();
 function App() {
