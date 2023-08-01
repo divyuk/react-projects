@@ -5,6 +5,9 @@ import Items from "./Items";
 function GroceryForm() {
   const [items, setItems] = useState([]);
   const [name, setName] = useState("");
+  function removeItem(currentId) {
+    setItems((currItems) => currItems.filter((item) => item.id !== currentId));
+  }
   function handleSubmit(e) {
     e.preventDefault();
     if (name) {
@@ -17,17 +20,23 @@ function GroceryForm() {
     }
   }
   return (
-    <div>
+    <>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <button type="submit">Add Items</button>
+        <h4>Grocery Bud</h4>
+        <div className="form-control">
+          <input
+            className="form-input"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <button className="btn" type="submit">
+            Add Items
+          </button>
+        </div>
       </form>
-      <Items items={items} />
-    </div>
+      <Items items={items} removeItem={removeItem} />
+    </>
   );
 }
 

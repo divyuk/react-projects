@@ -1,10 +1,10 @@
 import SingleItem from "./SingleItem";
 
-function Items({ items }) {
+function Items({ items, removeItem }) {
   return (
-    <div>
+    <div className="items">
       {items.map((item, index) => (
-        <SingleItem name={item.name} />
+        <SingleItem item={item} removeItem={removeItem} />
       ))}
     </div>
   );
