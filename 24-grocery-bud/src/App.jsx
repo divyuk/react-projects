@@ -1,5 +1,11 @@
+import GroceryForm from "./GroceryForm";
+
 const App = () => {
-  return <h2>Grocery Bud - Starter</h2>;
+  return (
+    <section className="section-center">
+      <GroceryForm />
+    </section>
+  );
 };
 
 export default App;
