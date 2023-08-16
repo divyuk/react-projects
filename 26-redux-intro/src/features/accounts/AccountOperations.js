@@ -16,10 +16,10 @@ function AccountOperations() {
     balance,
     isLoading,
   } = useSelector((store) => store.account);
-  console.log(balance);
   function handleDeposit() {
     if (!depositAmount) return;
-    dispatch(deposit(depositAmount, currency));
+    // dispatch(deposit(depositAmount, currency));
+    dispatch(deposit(depositAmount));
     setDepositAmount("");
     setCurrency("USD");
   }
