@@ -1,0 +1,15 @@
+{
+  "count": 12,
+  "next": null,
+  "previous": "https://pokeapi.co/api/v2/pokemon?offset=5&limit=5",
+  "results": [
+    {
+      "name": "metapod",
+      "url": "https://pokeapi.co/api/v2/pokemon/11/"
+    },
+    {
+      "name": "butterfree",
+      "url": "https://pokeapi.co/api/v2/pokemon/12/"
+    }
+  ]
+}
