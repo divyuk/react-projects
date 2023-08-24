@@ -2,25 +2,26 @@ import { useEffect, useState } from "react";
 import pokemonAPI from "./api/PokemonAPI";
 
 const PokemonList = () => {
-  const [limit, setLimit] = useState(5);
-  const offset = 0;
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [pokemons, setPokemons] = useState([]);
-  const [all, setAll] = useState(0);
+  const [totalCount, setTotalCount] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const pokemonData = await pokemonAPI.get(
-          `/pokemon?limit=${limit}&offset=${offset}`
+          `/pokemon?limit=5&offset=${offset}`
         );
-        setPokemons(pokemonData.data.results);
-        setAll(pokemonData.data.count);
+        setPokemons([...pokemons, ...pokemonData.data.results]);
+        setTotalCount(pokemonData.data.count);
+        setLoading(false);
       } catch (err) {
         console.log("There was an error in fetching...", err);
       }
     };
     fetchData();
-  }, [limit]);
-  // console.log(pokemons);
+  }, [offset]);
 
   return (
     <div>
@@ -29,10 +30,12 @@ const PokemonList = () => {
           <li key={index}>{pokemon.name}</li>
         ))}
       </ul>
+
       <p>
-        Displaying {pokemons.length} of {all} results
+        Displaying {pokemons.length} of {totalCount} results
       </p>
-      <button onClick={() => setLimit((prev) => prev + 5)}>Load more</button>
+      {loading && <p>Loading...</p>}
+      <button onClick={() => setOffset((prev) => prev + 5)}>Load more</button>
     </div>
   );
 };

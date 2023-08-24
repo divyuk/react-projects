@@ -77,4 +77,41 @@ describe("Pokemon list with 'Load more' button", () => {
       )
     ).toBeInTheDocument();
   });
+
+  it("loads 5 more pokemons when the user presses 'Load more'", async () => {
+    render(<PokemonList />);
+
+    // Press the "Load more" button
+    const user = userEvent.setup();
+
+    await user.click(await screen.findByRole("button", { name: "Load more" }));
+
+    // Check that the summary correctly updated
+    expect(
+      await screen.findByText(
+        `Displaying 10 of ${pokemonsResultPage1.count} results`
+      )
+    ).toBeInTheDocument();
+
+    // Check that 10 items are displayed
+    expect(await screen.findAllByRole("listitem")).toHaveLength(10);
+
+    // Check that those 10 items are what we expect
+    expect(
+      screen.getAllByRole("listitem").map((listItem) => listItem.textContent)
+    ).toMatchInlineSnapshot(`
+    [
+      "bulbasaur",
+      "ivysaur",
+      "venusaur",
+      "charmander",
+      "charmeleon",
+      "charizard",
+      "squirtle",
+      "wartortle",
+      "blastoise",
+      "caterpie",
+    ]
+    `);
+  });
 });
