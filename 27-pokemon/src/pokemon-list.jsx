@@ -30,9 +30,9 @@ const PokemonList = () => {
         ))}
       </ul>
       <p>
-        Displaying {pokemons.length} of {all} result
+        Displaying {pokemons.length} of {all} results
       </p>
-      <button onClick={() => setLimit((prev) => prev + 5)}>Load More</button>
+      <button onClick={() => setLimit((prev) => prev + 5)}>Load more</button>
     </div>
   );
 };

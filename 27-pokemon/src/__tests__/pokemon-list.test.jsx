@@ -63,4 +63,18 @@ describe("Pokemon list with 'Load more' button", () => {
     // Check the API was called with the correct `offset` and `limit`
     expect(getPokemonsMock).toHaveBeenCalledWith({ offset: 0, limit: 5 });
   });
+
+  it("shows a 'Load more' button and the info about number of items displayed", async () => {
+    render(<PokemonList />);
+
+    // Shows the 'Load more' button
+    expect(await screen.findByRole("button")).toHaveTextContent("Load more");
+
+    // Check that the summary correctly says how many items are shown
+    expect(
+      await screen.findByText(
+        `Displaying 5 of ${pokemonsResultPage1.count} results`
+      )
+    ).toBeInTheDocument();
+  });
 });
